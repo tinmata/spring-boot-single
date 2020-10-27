@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="ja" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Test Page</title>
+</head>
+<body>
+<div>
+  <h2>外部プロパティ読込</h2>
+  <ul>
+    <li>
+      <p>"@PropertySource + Environment"による取得した値は：<span th:text="${hoge}"></span></p>
+    </li>
+    <li>
+      <p>"@Value"による取得し、上書きされる値は：<span th:text="${fuga}"></span></p>
+    </li>
+  </ul>
+  <p>
+    SpringApplication は、次の場所にある application.properties や application.yml ファイルからプロパティをロードし、Spring Environment に追加します。
+  </p>
+  <ol>
+    <li>現在のディレクトリの /config サブディレクトリ</li>
+    <li>現在のディレクトリ</li>
+    <li>クラスパス /config パッケージ</li>
+    <li>クラスパスのルート</li>
+  </ol>
+  <p>
+    構成の場所は逆の順序で検索されます。
+    デフォルトでは、構成された場所は classpath:/,classpath:/config/,file:./,file:./config/*/,file:./config/ です。
+    結果の検索順序は次のとおりです。
+  </p>
+  <ol>
+    <li>file:./config/</li>
+    <li>file:./config/*/</li>
+    <li>file:./</li>
+    <li>classpath:/config/</li>
+    <li>classpath:/</li>
+  </ol>
+  <p>
+    spring.config.location を使用してカスタム構成の場所を構成すると、デフォルトの場所が置き換えられます。
+    例： spring.config.location が値 classpath:/custom-config/,file:./custom-config/ で構成されている場合、検索順序は次のようになります。
+  </p>
+  <ol>
+    <li>file:./custom-config/</li>
+    <li>classpath:/custom-config/</li>
+  </ol>
+  <p>
+    または、spring.config.additional-location を使用してカスタム構成の場所を構成する場合、デフォルトの場所に加えてそれらが使用されます。
+    デフォルトの場所の前に追加の場所が検索されます。
+    例： classpath:/custom-config/,file:./custom-config/ の追加の場所が構成されている場合、検索順序は次のようになります。
+  </p>
+  <ol>
+    <li>file:./custom-config/</li>
+    <li>classpath:/custom-config/</li>
+    <li>file:./config/</li>
+    <li>file:./config/*/</li>
+    <li>file:./</li>
+    <li>classpath:/config/</li>
+    <li>classpath:/</li>
+  </ol>
+  <h2>ランダム値の構成</h2>
+  <ul>
+    <li>
+      <p>"${random.value}"による取得した値は：<span th:text="${password}"></span></p>
+    </li>
+    <li>
+      <p>"${random.uuid}"による取得した値は：<span th:text="${uuid}"></span></p>
+    </li>
+    <li>
+      <p>"${random.int}"による取得した値は：<span th:text="${intValue}"></span></p>
+    </li>
+    <li>
+      <p>"${random.int[1,99]}"による取得した値は：<span th:text="${intRange}"></span></p>
+    </li>
+    <li>
+      <p>"${random.int(10)}"による取得した値は：<span th:text="${intLessThanTen}"></span></p>
+    </li>
+    <li>
+      <p>"${random.long}"による取得した値は：<span th:text="${longValue}"></span></p>
+    </li>
+    <li>
+      <p>"${random.long[111111111111,999999999999]}"による取得した値は：<span th:text="${longRange}"></span></p>
+    </li>
+  </ul>
+</div>
+</body>
+</html>

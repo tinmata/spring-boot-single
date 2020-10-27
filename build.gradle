@@ -1,0 +1,101 @@
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath "org.springframework.boot:spring-boot-gradle-plugin:${springVersion}"
+    }
+}
+
+plugins {
+    id 'idea'
+    id 'application'
+    /*
+    「java」プラグインを適用すると、「jar」と「bootJar」タスクが自動的に追加されます。
+    「bootJar」タスクの実行で単独実行可能なjarファイルにパッケージ化できます。
+     */
+    id 'java'
+    /*
+    「war」プラグインを適用すると、「war」と「bootWar」タスクが追加されます。
+    「bootWar」タスクの実行で外部コンテナーにデプロイ可能なwarファイルにパッケージ化できます。
+    Servletコンテナーの依存関係を「providedRuntime」構成に追加する必要があります。
+     */
+    id 'war'
+    id 'java-library'
+    id 'org.springframework.boot' version "${springVersion}"
+    id 'io.spring.dependency-management' version "${dependencyManagementVersion}"
+}
+
+group = 'com.teamzc.training'
+version = '1.0-SNAPSHOT'
+sourceCompatibility = JavaVersion.VERSION_1_8
+targetCompatibility = JavaVersion.VERSION_1_8
+// メインクラス構成方法③
+// 「application」プラグインを適用すると、プロジェクトプロパティでメインクラスを構成します。
+mainClassName = 'com.teamzc.training.Application'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    // ↓↓↓↓↓ SpringFramework Libraries ↓↓↓↓↓
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-security'
+    implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
+    // ↑↑↑↑↑ SpringFramework Libraries ↑↑↑↑↑
+
+    // ↓↓↓↓↓ Database Libraries ↓↓↓↓↓
+    implementation "mysql:mysql-connector-java:${mySqlVersion}"
+    // ↑↑↑↑↑ Database Libraries ↑↑↑↑↑
+
+    // ↓↓↓↓↓ OSS Libraries ↓↓↓↓↓
+    implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity5:3.0.4.RELEASE'
+    implementation "ch.qos.logback:logback-core:${logbackVersion}"
+    annotationProcessor "org.projectlombok:lombok:${lombokVersion}"
+    /*
+    「war」プラグインでは、「providedCompile」と「providedRuntime」の2つの依存構成を追加します。
+    この2つの構成は、warアーカイブに追加されない点以外は、それぞれcompile、runtimeと同じ機能です。
+     */
+    providedCompile "org.projectlombok:lombok:${lombokVersion}"
+    providedRuntime 'org.springframework.boot:spring-boot-starter-tomcat'
+    // ↑↑↑↑↑ OSS Libraries ↑↑↑↑↑
+
+    // ↓↓↓↓↓ Test Libraries ↓↓↓↓↓
+    testCompile "junit:junit:${junitVersion}"
+    testImplementation('org.springframework.boot:spring-boot-starter-tomcat') {
+        exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
+    }
+    // ↑↑↑↑↑ Test Libraries ↑↑↑↑↑
+}
+
+bootJar {
+    manifest {
+        attributes 'Start-Class': 'com.teamzc.training.Application'
+    }
+}
+
+bootWar {
+    manifest {
+        attributes 'Main-Class': 'org.springframework.boot.loader.PropertiesLauncher'
+    }
+    // メインクラス構成方法①
+    mainClassName = 'com.teamzc.training.Application'
+}
+
+// 「META-INF/build-info.properties」にビルド情報を出力します。
+springBoot {
+    buildInfo {
+        properties {
+            artifact = 'spring-boot-training'
+            version = '1.0'
+            group = 'com.teamzc.training'
+            name = 'spring-boot-training'
+        }
+    }
+    // メインクラス構成方法②
+    // SpringBoot DSL プロパティを利用して、プロジェクト全体でメインクラス名を構成します。
+    mainClassName = 'com.teamzc.training.Application'
+}

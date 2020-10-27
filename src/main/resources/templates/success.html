@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Hello World!</title>
+</head>
+<body>
+<h1 th:inline="text">Welcome, [[${#httpServletRequest.remoteUser}]]!</h1>
+<div th:if="${#authorization.expression('hasRole(''ROLE_ADMINISTRATOR'')')}">
+  <span>
+    This will only be displayed if authenticated user has role ROLE_ADMINISTRATOR.
+    Using the expression utility objects
+  </span>
+  <span th:text="${#authentication.name}">
+    The value of the "name" property of the authentication object should appear here.
+  </span>
+  <div th:text="${#authentication.principal}">
+    Authentication.getPrincipal()
+  </div>
+</div>
+<div sec:authorize="hasRole('ROLE_USER')">
+  <span>
+    This will only be displayed if authenticated user has role ROLE_USER.
+    Using the attributes
+  </span>
+  <span sec:authentication="name">
+    The value of the "name" property of the authentication object should appear here.
+  </span>
+  <span sec:authentication="principal">
+    Authentication.getPrincipal()
+  </span>
+</div>
+<form method="post" th:action="@{/logout}">
+  <input type="submit" value="Sign Out"/>
+</form>
+</body>
+</html>

@@ -1,0 +1,53 @@
+spring:
+  main:
+    # 遅延初期化（デフォルトはfalse）
+    # 有効な場合、アプリケーションの起動にかかる時間を短縮でき、HTTPリクエストを受信するまで多くのWeb関連Beanが初期化されなくなります。
+    # 欠点は、アプリケーションの問題の発見を遅らせる可能性があることです。
+    lazy-initialization: false
+    # 構成プロパティバナーをオフにする
+    banner-mode: OFF
+  #  datasource:
+  #    hikari:
+  #      #driver-class-name: com.mysql.cj.jdbc.Driver
+  #      jdbc-url: jdbc:mysql://localhost:3306/spring_web?useUnicode=true&characterEncoding=utf8&serverTimezone=JST
+  #      username: test
+  #      password: 5ql@dmin2019
+  resources:
+    static-locations:
+      - classpath:/static/
+    cache:
+      period: 0
+  thymeleaf:
+    enabled: true
+    cache: false
+    prefix: classpath:/templates/
+    suffix: .html
+    mode: HTML
+  config:
+    additional-location: classpath:/custom-config/,file:./custom-config/
+# Jacksonの設定
+#  jackson:
+#    serialization:
+# エンティティのプロキシオブジェクト存在しない場合に例外が発生させるかどうかを制御します。
+#      FAIL_ON_EMPTY_BEANS: false
+server:
+  port: 9999
+
+
+# ランダム値の構成
+my:
+  secret:
+    password: ${random.value}
+  uuid: ${random.uuid}
+  int:
+    value: ${random.int}
+    range: ${random.int[1,99]}
+    less:
+      than:
+        ten: ${random.int(10)}
+  long:
+    value: ${random.long}
+    range: ${random.long[111111111111,999999999999]}
+# アプリケーションプロパティ
+ext:
+  fuga: applicationプロファイル固有プロパティの「FUGA」
