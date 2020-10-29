@@ -1,21 +1,25 @@
 package com.teamzc.training.config;
 
-import java.util.Arrays;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.crypto.factory.PasswordEncoderFactories;
-import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 
+/**
+ * Spring Securityのセキュリティ設定クラスです。
+ * <pre>
+ *   Conrollerクラスまたはそのメソッドに@Securedアノテーションを付けることで、URLに関する権限を指定する事ができます。
+ *   この場合、WebSecurityConfigで@EnableGlobalMethodSecurityアノテーションを付けておく必要がある。
+ *   ユーザーに権限が無い場合、AccessDeniedExceptionが発生する。
+ * </pre>
+ */
 @Configuration
 @EnableWebSecurity
+@EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true)
 @Slf4j
+@SuppressWarnings("unused")
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
   @Override
@@ -37,23 +41,23 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         .permitAll();
   }
 
-  @Bean
-  @Override
-  protected UserDetailsService userDetailsService() {
-
-    log.info("InMemoryユーザ情報を初期化します。");
-
-    UserDetails admin = User.withUsername("admin")
-        .password(PasswordEncoderFactories.createDelegatingPasswordEncoder().encode("admin"))
-        .roles("ADMINISTRATOR")
-        .build();
-
-    UserDetails user = User.withUsername("user")
-        .password(PasswordEncoderFactories.createDelegatingPasswordEncoder().encode("Password"))
-        .roles("USER", "ADMINISTRATOR")
-        .build();
-
-    return new InMemoryUserDetailsManager(Arrays.asList(user, admin));
-  }
+//  @Bean
+//  @Override
+//  protected UserDetailsService userDetailsService() {
+//
+//    log.info("InMemoryユーザ情報を初期化します。");
+//
+//    UserDetails admin = User.withUsername("admin")
+//        .password(PasswordEncoderFactories.createDelegatingPasswordEncoder().encode("admin"))
+//        .roles("ADMINISTRATOR")
+//        .build();
+//
+//    UserDetails user = User.withUsername("user")
+//        .password(PasswordEncoderFactories.createDelegatingPasswordEncoder().encode("Password"))
+//        .roles("USER", "ADMINISTRATOR")
+//        .build();
+//
+//    return new InMemoryUserDetailsManager(Arrays.asList(user, admin));
+//  }
 
 }

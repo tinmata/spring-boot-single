@@ -7,29 +7,57 @@
 </head>
 <body>
 <h1 th:inline="text">Welcome, [[${#httpServletRequest.remoteUser}]]!</h1>
-<div th:if="${#authorization.expression('hasRole(''ROLE_ADMINISTRATOR'')')}">
-  <span>
+<div>
+  <table>
+    <tr>
+      <td>ID</td>
+      <td>[[${authUserInfo.userId}]]</td>
+    </tr>
+    <tr>
+      <td>ユーザ名</td>
+      <td>[[${authUserInfo.userName}]]</td>
+    </tr>
+    <tr>
+      <td>メール</td>
+      <td>[[${authUserInfo.email}]]</td>
+    </tr>
+    <tr>
+      <td>パスワード</td>
+      <td>[[${authUserInfo.password}]]</td>
+    </tr>
+    <tr>
+      <td>権限</td>
+      <td>[[${authUserInfo.role}]]</td>
+    </tr>
+    <tr>
+      <td>有効/無効</td>
+      <td>[[${authUserInfo.enabled}]]</td>
+    </tr>
+  </table>
+</div>
+<div th:if="${#authorization.expression('hasRole(''ROLE_ADMIN'')')}">
+  <p>
     This will only be displayed if authenticated user has role ROLE_ADMINISTRATOR.
     Using the expression utility objects
-  </span>
-  <span th:text="${#authentication.name}">
+  </p>
+  <p th:text="${#authentication.name}">
     The value of the "name" property of the authentication object should appear here.
-  </span>
-  <div th:text="${#authentication.principal}">
+  </p>
+  <p th:text="${#authentication.principal}">
     Authentication.getPrincipal()
-  </div>
+  </p>
 </div>
-<div sec:authorize="hasRole('ROLE_USER')">
-  <span>
-    This will only be displayed if authenticated user has role ROLE_USER.
+<div sec:authorize="hasRole('ROLE_USER_1')">
+  <p>
+    This will only be displayed if authenticated user has role ROLE_USER_1.
     Using the attributes
-  </span>
-  <span sec:authentication="name">
+  </p>
+  <p sec:authentication="name">
     The value of the "name" property of the authentication object should appear here.
-  </span>
-  <span sec:authentication="principal">
-    Authentication.getPrincipal()
-  </span>
+  </p>
+  <p sec:authentication="principal.username">
+    Authentication.getPrincipal().isEnabled()
+  </p>
 </div>
 <form method="post" th:action="@{/logout}">
   <input type="submit" value="Sign Out"/>
