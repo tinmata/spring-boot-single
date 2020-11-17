@@ -1,24 +1,31 @@
 package com.teamzc.training.domain.service;
 
-import com.teamzc.training.domain.entity.AuthUserDetails;
 import com.teamzc.training.domain.entity.AuthUserInfo;
+import com.teamzc.training.domain.entity.AuthenticatedUser;
 import com.teamzc.training.domain.reporitory.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
- * 認証サービスクラスです。
+ * ユーザ認証サービスをカスタイマイズするクラスです。
+ * <pre>
+ *   Spring側のインターフェス「org.springframework.security.core.userdetails.UserDetailsService」を実装します。
+ * </pre>
  */
 @Service
-public class AuthUserDetailsService implements UserDetailsService {
+@Transactional
+@RequiredArgsConstructor
+@SuppressWarnings("unused")
+public class UserDetailsManager implements UserDetailsService {
 
-  @Autowired
-  private UserRepository userRepository;
+  private final UserRepository userRepository;
 
   @Override
-  public org.springframework.security.core.userdetails.UserDetails loadUserByUsername(String userId) {
+  public UserDetails loadUserByUsername(String userId) throws UsernameNotFoundException {
 
     if (null == userId || userId.isEmpty()) {
       throw new UsernameNotFoundException("User Id is empty.");
@@ -33,7 +40,7 @@ public class AuthUserDetailsService implements UserDetailsService {
       authUserInfo.setPassword(userInfo.getPassword());
       authUserInfo.setRole(userInfo.getRole());
       authUserInfo.setEnabled(userInfo.isEnabled());
-      return new AuthUserDetails(authUserInfo);
+      return new AuthenticatedUser(authUserInfo);
     }).orElseThrow(() -> new UsernameNotFoundException("Not found user id : " + userId));
   }
 

@@ -17,13 +17,14 @@ import org.springframework.core.env.Environment;
  */
 @Configuration
 @PropertySource(value = "file:./config/datasource.properties", encoding = "UTF-8")
+@SuppressWarnings("unused")
 public class DataSourceConfig {
 
   @Autowired
   private Environment environment;
 
-  @Bean
   /**
+   * DataSourceを設定する処理です。
    * <pre>
    *   クラスパス配下のプロパティから取得する場合、
    *   @ConfigurationPropertiesアノテーションを使用します。
@@ -31,6 +32,7 @@ public class DataSourceConfig {
    * </pre>
    */
 //  @ConfigurationProperties(prefix = "app.datasource.hikari")
+  @Bean
   public DataSource dataSource() {
     // Hikariを使用する場合、typeに追加します。
     return DataSourceBuilder.create().type(HikariDataSource.class)

@@ -60,7 +60,8 @@
   </p>
 </div>
 <form method="post" th:action="@{/logout}">
-  <input type="submit" value="Sign Out"/>
+  <input type="submit" value="Sign Out">
+  <input name="${_csrf.parameterName}" type="hidden" value="${_csrf.token}">
 </form>
 </body>
 </html>

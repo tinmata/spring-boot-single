@@ -12,13 +12,13 @@ import org.springframework.security.core.userdetails.UserDetails;
  *   Spring側のインターフェス「org.springframework.security.core.userdetails.UserDetails」を実装します。
  * </pre>
  */
-public class AuthUserDetails implements UserDetails {
+public class AuthenticatedUser implements UserDetails {
 
   private final AuthUserInfo authUserInfo;
 
   private final Collection<GrantedAuthority> authorities;
 
-  public AuthUserDetails(AuthUserInfo authUserInfo) {
+  public AuthenticatedUser(AuthUserInfo authUserInfo) {
     this.authUserInfo = authUserInfo;
     this.authorities = new ArrayList<>();
     // 権限の設定
