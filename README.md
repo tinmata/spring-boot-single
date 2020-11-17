@@ -1,10 +1,10 @@
-#Form認証で学ぶ
+# Form認証で学ぶ
 
 ```text
 Spring Security 入門
 ```
 
-##Spring Security 概要
+## Spring Security 概要
 
 1. 登場する主なモジュール群
 
@@ -38,7 +38,7 @@ Spring Security 入門
     4. ExceptionTranslationFilter.java
         + 認可処理で発生した例外をハンドリングし、クライアントへ適切なレスポンスを行う
 
-##今回作るもの
+## 今回作るもの
 
 1. ユーザ管理システム
     + ユーザ一覧、詳細、登録、削除
